@@ -12,7 +12,7 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.isCheckedOut = false;
-        this.checkedOutTo = "";
+        this.checkedOutTo = null;
     }
 
     // Getters
@@ -20,6 +20,10 @@ public class Book {
     public String getIsbn() { return this.isbn; }
     public String getTitle() {  return this.title; }
     public boolean isCheckedOut() { return this.isCheckedOut; }
+
+    public String getCheckedOutBy() {
+        return checkedOutTo;
+    }
 
     // Setters
     public void setId(int id) { this.id = id; }
@@ -30,14 +34,14 @@ public class Book {
 
 
     public void checkOut(String name){
-         checkedOutTo = "";
-         isCheckedOut = true;
+         this.checkedOutTo = name;
+         this.isCheckedOut = true;
 
     }
 
     public void checkIn(){
-        checkedOutTo = "";
-        isCheckedOut = false;
+        this.checkedOutTo = null;
+        this.isCheckedOut = false;
     }
 
 

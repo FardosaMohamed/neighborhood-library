@@ -2,6 +2,7 @@
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
 import java.util.Scanner;
+import java.util.SortedMap;
 
 public class Main {
     static Book[] books = new Book[20];
@@ -43,21 +44,50 @@ public class Main {
 
     public static void CheckedOutBooks() {
         System.out.println("\nChecked Out:");
+        boolean anyCheckedOut = false;
+
         for (Book b : books) {
-            if (b == null || !b.isCheckedOut) { //If b is null (empty spot in the collection) or the book is not checked out
-                continue; // then it skips the current loop (No printing)
+            if (b != null && b.isCheckedOut) { //If b is not null ( not empty ) or the book is checked out
+                System.out.printf("ID: %d - %s, %s - Checked out by: %s\n", b.getId(),b.getTitle(),b.getIsbn(), b.getCheckedOutBy()); // prints out the books that are checked out
+                anyCheckedOut = true; // As soon it find a book thats checked out, anyCheckedOut becomes true
             }
-            System.out.printf("ID: %d - %s, %s\n", b.id, b.title, b.isbn); // if the book is not null and checked out, this line will be printed
         }
+
+        if (!anyCheckedOut) { // After looking through all the book and no books are checked out
+            System.out.println("No books are currently checked out.");// print this
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        String command = "";
+
+        while (!command.equalsIgnoreCase("X")) {
+            System.out.println("""
+                    C - to Check In a book
+                    X - to go back to the home screen
+                    """);
+            command = scanner.nextLine().trim();
+
+            if (command.equalsIgnoreCase("C")) {
+                checkInBook(scanner);
+                return;
+            } else if (!command.equalsIgnoreCase("X")) {
+                System.out.println("Invaild input. Please choose C or X.");
+            }
+        }
+
 
     }
 
     public static void checkInBook(Scanner scanner) {
         System.out.println("Enter the ID of the book to check in: ");
+
         int idToCheckIn = Integer.parseInt(scanner.nextLine());
         boolean found = false;
+
         for (Book b : books) {
             if (b != null && b.getId() == idToCheckIn) {
+                found = true;
                 if (!b.isCheckedOut()) {
                     System.out.println("Book is Already Checked Out");
                 } else {
@@ -103,7 +133,7 @@ public class Main {
                     System.out.println("Invalid choice.");
             }
         }
-
+        System.out.println("Thanks for using the library!!!");
 
     }
 }
